@@ -4,34 +4,46 @@ class FirstContentLoadedInHome extends StatelessWidget {
   const FirstContentLoadedInHome();
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          const SomeWidgetCard(),
-          const SomeWidgetCard(),
-          const SomeWidgetCard(),
-          const SomeWidgetCard(),
-          const SizedBox(
-            height: 20,
-          ),
-          // ! AQUI, usar Expanded
-          SizedBox(
-            height: 300,
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (_, index) {
-                return ListTile(
-                  title: Text("Title in position $index"),
-                  subtitle: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci",
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SomeWidgetCard(),
+                const SomeWidgetCard(),
+                const SomeWidgetCard(),
+                const SomeWidgetCard(),
+                const SizedBox(
+                  height: 20,
+                ),
+                // ! AQUI, usar Expanded
+                Flexible(
+                  // height: 300,
+                  fit: FlexFit.loose,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 10,
+                    itemBuilder: (_, index) {
+                      return ListTile(
+                        title: Text("Title in position $index"),
+                        subtitle: Text(
+                          "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci",
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
